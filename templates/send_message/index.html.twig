@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Send Message!!
+{% endblock %}
+
+{% block body %}
+
+	<ul style='list-style: none; border-top: 1px solid rgba(218, 51, 10, 0.6); border-bottom: 1px solid rgba(218, 51, 10, 0.6); margin: 10px;'>
+		{% for error in errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+	</ul>
+
+	<nav>
+		<a href=" {{ path('outbox') }} ">Outbox</a>
+		<a href=" {{ path('inbox') }} ">Inbox</a>
+		<a href=" {{ path('profile') }} ">Profile</a>
+		<a href=" {{ path('app_logout') }} ">Logout</a>
+	</nav>
+
+	<div>
+		<h1>Send Message</h1>
+
+		<form method="post" novalidate enctype="multipart/form-data">
+			<div>
+				<label for="username">To:
+				</label>
+				<input type="text" id="username" name="username" list="contacts" placeholder="" required>
+			</div>
+			<div>
+				<label for="message">Message</label>
+				<textarea type="text" id="message" name="message" placeholder="New message" value="" required></textarea>
+			</div>
+			<div>
+				<button type="submit">Send</button>
+			</div>
+		</form>
+	</div>
+{% endblock %}

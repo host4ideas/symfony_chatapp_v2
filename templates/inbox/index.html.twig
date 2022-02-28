@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Inbox
+{% endblock %}
+
+{% block body %}
+
+<a href=" {{ path('outbox') }} ">Outbox</a>
+<a href=" {{ path('profile') }} ">Profile</a>
+<a href=" {{ path('send_message') }} ">Send Message</a>
+<a href=" {{ path('app_logout') }} ">Logout</a>
+
+<div>
+	<h1>Inbox</h1>
+
+	{% for message in inbox_message %}
+		<a href="{{ path('info_message', {'id': message.id}) }}">
+			<div style="width: 18rem; border: 1px solid black; margin: 10px; overflow: hidden">
+				<div>
+					{% for user in users %}
+						{% if user.id == message.sender %}
+							<h6>{{ user.email }}</h6>
+						{% endif %}
+					{% endfor %}
+					<p>{{ message.message }}</p>
+					{% if message.getIsRead() == 0 %}
+						<span>Unread</span>
+					{% else %}
+						<span>Read</span>
+					{% endif %}
+				</div>
+			</div>
+		</a>
+	{% endfor %}
+</div>
+{% endblock %}

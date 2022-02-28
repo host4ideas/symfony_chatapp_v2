@@ -1,0 +1,1 @@
+INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES ('0', 'admin@admin.com', '[\"ROLE_ADMIN\"]', '$2y$13$N7T/1x3XViAHKyggNX4i.O2qDIDXcjZcUEn2iGhl/udMtyQ78XUci');

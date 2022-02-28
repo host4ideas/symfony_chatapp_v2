@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Info message
+{% endblock %}
+
+{% block body %}
+
+	<nav>
+		<a href=" {{ path('inbox') }} ">Inbox</a>
+		<a href=" {{ path('outbox') }} ">Outbox</a>
+		<a href=" {{ path('send_message') }} ">Send Message</a>
+		<a href=" {{ path('app_logout') }} ">Logout</a>
+	</nav>
+
+	<main>
+		<div>
+			<div>
+				Message information
+			</div>
+			<div>
+				<h3>From:
+					{{ user[0].email }}</h3>
+				<h3>Content:</h3>
+				<p>
+					{{ message.message }}</p>
+			</div>
+		</div>
+	</main>
+
+{% endblock %}

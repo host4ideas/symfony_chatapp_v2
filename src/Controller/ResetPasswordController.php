@@ -34,6 +34,16 @@ class ResetPasswordController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    function checkpassw($passw)
+    {
+        if (strlen($passw) < 6 or strlen($passw) > 16) return FALSE;
+        $mayu = preg_match("/[A-Z]/", $passw);
+        $minu = preg_match("/[a-z]/", $passw);
+        $nume = preg_match("/[0-9]/", $passw);
+        $noalfa = preg_match("/[!-\\\\]/", $passw);
+        return $minu and $mayu and $nume and $noalfa;
+    }
+
     /**
      * Display & process form to request a password reset.
      */
@@ -44,6 +54,7 @@ class ResetPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             return $this->processSendingPasswordResetEmail(
                 $form->get('email')->getData(),
                 $mailer,
@@ -124,7 +135,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('reset_password/reset.html.twig', [
@@ -166,8 +177,7 @@ class ResetPasswordController extends AbstractController
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
-            ])
-        ;
+            ]);
 
         $mailer->send($email);
 
