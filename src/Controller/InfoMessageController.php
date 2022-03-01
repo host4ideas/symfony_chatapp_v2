@@ -10,11 +10,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Message;
 use App\Repository\UserRepository;
 
+/**
+ * This is the controller which handles the request to show each message content.
+ * When a message is clicked, the user is redirected to: /info_message/{id},
+ * being id the mesages's id.
+ */
 class InfoMessageController extends AbstractController
 {
-	/**
-	 * @Route("/info_message/{id}", methods="GET", name="info_message")
-	 */
+	#[Route('/info_message/{id}', name: 'info_message', methods: ['GET'])]
 	public function infoMessage(Message $message, ManagerRegistry $doctrine, MessageRepository $messageRepository, UserRepository $userRepository): Response
 	{
 		// Error handling
@@ -26,13 +29,15 @@ class InfoMessageController extends AbstractController
 
 		$entityManager = $doctrine->getManager();
 
-		// Get email of the user that sends the message
+		// Get messages's id
 		$messageId = $message->getId();
 
+		// Get the sender id by the sender of the message in the messages repository
 		$fromUserID = $messageRepository->findBy([
 			'id' => $message->getId()
 		]);
 
+		// Get the user that sends the message by the sender's id
 		$fromUser = $userRepository->findBy([
 			'id' => $fromUserID[0]->getSender()
 		]);

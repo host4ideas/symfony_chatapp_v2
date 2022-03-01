@@ -20,6 +20,10 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
+/**
+ * This controller is only a demonstration of how it should be create a password recovery.
+ * Since there is some bugs with sending emails, this isn't currently functional.
+ */
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
 {

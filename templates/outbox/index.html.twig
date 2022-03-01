@@ -10,6 +10,9 @@
 		<a href=" {{ path('profile') }} ">Profile</a>
 		<a href=" {{ path('send_message') }} ">Send Message</a>
 		<a href=" {{ path('app_logout') }} ">Logout</a>
+		{% if user_role == "ROLE_ADMIN" %}
+			<a href=" {{ path('user_index') }} ">Admin zone</a>
+		{% endif %}
 	</nav>
 
 	<div>

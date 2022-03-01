@@ -5,41 +5,53 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * This controller handles the request to show the profile and edit the profile.
+ */
 class ProfileController extends AbstractController
 {
-    #[Route('/profile', name: 'profile')]
-    public function index(ManagerRegistry $doctrine,): Response
+    /**
+     * Handle the show user route by passing the user id as a parameter
+     */
+    #[Route('/profile', name: 'profile', methods: ['GET'])]
+    public function show(UserRepository $userRepository): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $entityManager = $doctrine->getManager();
 
-        //Save changes in database
-        $entityManager->persist($user);
-        $entityManager->flush();
+        // Get all the messages from the repository where the sender is the current user
+        $currentUser = $userRepository->findBy(
+            ['id' => $user->getId()]
+        );
 
-        return $this->render('login/index.html.twig', [
-            'email' => $lastUsername
+        return $this->render('profile/index.html.twig', [
+            'user' => $currentUser[0],
         ]);
     }
 
-    #[Route('/edit', name: 'user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    /**
+     * Handle the delete user route by passing the user id as a parameter
+     */
+    #[Route('/user_delete_self', name: 'user_delete_self', methods: ['POST'])]
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        /**
+         * CSRF - or Cross-site request forgery - is a method by which a malicious user attempts to 
+         * make your legitimate users unknowingly submit data that they don't intend to submit.
+         * 
+         * CSRF protection works by adding a hidden field to your form that contains a value that only you and your user know. 
+         * This ensures that the user - not some other entity - is submitting the given data.
+         */
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($user);
             $entityManager->flush();
-
-            return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('login', [], Response::HTTP_SEE_OTHER);
     }
 }

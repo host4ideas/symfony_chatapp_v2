@@ -7,11 +7,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * This is the login controller. This will only render the login template as the 
+ * login process is captured by Symfony and configured in security.yaml
+ */
 class LoginController extends AbstractController
 {
     #[Route('/', name: 'login')]
-
-    public function index(AuthenticationUtils $authenticationUtils): Response {
+    public function index(AuthenticationUtils $authenticationUtils): Response
+    {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 

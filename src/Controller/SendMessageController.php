@@ -24,13 +24,18 @@ class SendMessageController extends AbstractController
 
         $errors = [];
 
+        /**
+         * When the controller receives a POST, upload the message to the database
+         */
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
             $userReceiver = $userRepository
                 ->findBy(
                     ['email' => $_POST['username']]
                 );
 
+            /**
+             * Handle to user N errors
+             */
             if ($userReceiver == null) {
                 array_push($errors, "Introduce a valid username.");
             } else {
@@ -39,16 +44,27 @@ class SendMessageController extends AbstractController
                 }
             }
 
+            /**
+             * Handle error if message is empty
+             */
             if ($_POST['message'] == "" || $_POST['message'] == null) {
                 array_push($errors, "A message is required.");
             }
 
+            /**
+             * If there is any error in the array, render the twig template
+             * with the errors to display
+             */
             if (count($errors) > 0) {
                 return $this->render('send_message/index.html.twig', [
                     'errors' => $errors
                 ]);
             }
 
+            /**
+             * If there isn't any errors it will get the POST content
+             * and upload it to the database as a new message
+             */
             $message->setReceiver($userReceiver[0]->getId());
             $message->setMessage($_POST['message']);
 
