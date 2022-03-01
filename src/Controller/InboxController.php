@@ -26,7 +26,8 @@ class InboxController extends AbstractController
 
         return $this->render('inbox/index.html.twig', [
             'inbox_message' => $messages,
-            'users' => $allUsers
+            'users' => $allUsers,
+            'user_role' => $user->getRoles()[0]
         ]);
     }
 }

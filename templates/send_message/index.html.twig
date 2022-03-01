@@ -5,18 +5,20 @@
 
 {% block body %}
 
-	<ul style='list-style: none; border-top: 1px solid rgba(218, 51, 10, 0.6); border-bottom: 1px solid rgba(218, 51, 10, 0.6); margin: 10px;'>
-		{% for error in errors %}
-			<li>{{ error }}</li>
-		{% endfor %}
-	</ul>
-
 	<nav>
 		<a href=" {{ path('outbox') }} ">Outbox</a>
 		<a href=" {{ path('inbox') }} ">Inbox</a>
 		<a href=" {{ path('profile') }} ">Profile</a>
 		<a href=" {{ path('app_logout') }} ">Logout</a>
 	</nav>
+
+	{% if errors %}
+		<ul style='list-style-type: none; margin: 10px; padding: 10px; border-top: 1px solid rgba(218, 51, 10, 0.6); border-bottom: 1px solid rgba(218, 51, 10, 0.6); width: fit-content;'>
+			{% for error in errors %}
+				<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 
 	<div>
 		<h1>Send Message</h1>
