@@ -12,8 +12,8 @@ use App\Repository\UserRepository;
 
 class SendMessageController extends AbstractController
 {
-    #[Route('/send/message/', name: 'send_message')]
-    public function index(ManagerRegistry $doctrine, UserRepository $userRepository): Response
+    #[Route('/send/message/{email}', name: 'send_message', defaults: ["email" => ""])]
+    public function index(ManagerRegistry $doctrine, UserRepository $userRepository, string $email): Response
     {
         $user = new User();
         $user = $this->getUser();
@@ -28,10 +28,17 @@ class SendMessageController extends AbstractController
          * When the controller receives a POST, upload the message to the database
          */
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $userReceiver = $userRepository
-                ->findBy(
-                    ['email' => $_POST['username']]
-                );
+            if ($email != "") {
+                $userReceiver = $userRepository
+                    ->findBy(
+                        ['email' => $email]
+                    );
+            } else {
+                $userReceiver = $userRepository
+                    ->findBy(
+                        ['email' => $_POST['username']]
+                    );
+            }
 
             /**
              * Handle to user N errors
@@ -80,7 +87,8 @@ class SendMessageController extends AbstractController
         }
 
         return $this->render('send_message/index.html.twig', [
-            'errors' => $errors
+            'errors' => $errors,
+            'email' => $email
         ]);
     }
 }

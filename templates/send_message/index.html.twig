@@ -24,14 +24,15 @@
 		<h1>Send Message</h1>
 
 		<form method="post" novalidate enctype="multipart/form-data">
-			<div>
-				<label for="username">To:
-				</label>
-				<input type="text" id="username" name="username" list="contacts" placeholder="" required>
+			<div style="margin: 10px">
+				<label for="username">To:</label>
+				<p><input type="text" id="username" name="username" list="contacts" placeholder="" value="{{ email }}" required></p>
 			</div>
-			<div>
-				<label for="message">Message</label>
-				<textarea type="text" id="message" name="message" placeholder="New message" value="" required></textarea>
+			<div style="margin: 10px">
+				<label for="message">Message:</label>
+				<div>
+					<textarea type="text" id="message" name="message" placeholder="New message" value="" required></textarea>
+				</div>
 			</div>
 			<div>
 				<button type="submit">Send</button>

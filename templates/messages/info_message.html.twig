@@ -25,6 +25,9 @@
 					{{ message.message }}</p>
 			</div>
 		</div>
+		<p>
+			<a href=" {{ path('send_message', {email:  user[0].email }) }} ">Reply</a>
+		</p>
 	</main>
 
 {% endblock %}
